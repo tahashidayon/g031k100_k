@@ -2,10 +2,11 @@
     class Board extends Model{
         public $name = 'Board';
         public $useTable = 'boards';
-
-        public function db_connect($com){
-			$this->save($com);
-		}
+         public $belongsTo = array('User'); //=> array(
+        //             'className' => 'User',
+        //             'foreignKey' => 'id'
+        //         ));
+        
 
 		public function del($data){
 			$this->delete($data["Board"]["id"]);
