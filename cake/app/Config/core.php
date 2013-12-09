@@ -52,9 +52,10 @@
  */
 	Configure::write('Error', array(
 		'handler' => 'ErrorHandler::handleError',
-		'level' => E_ALL & ~E_DEPRECATED,
+		'level' => E_ALL & ~E_DEPRECATED ,
 		'trace' => true
 	));
+	
 
 /**
  * Configure the Exception handler used for uncaught exceptions. By default,

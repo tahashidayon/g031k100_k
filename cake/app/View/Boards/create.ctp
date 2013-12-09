@@ -13,7 +13,6 @@
 			'action' => 'creatable'
 		)) ;//フォーム開始
 		echo $this->Form->hidden("comment", array("value" => $com["Board"]["comment"]));
-		//echo $this->Form->hidden("user_id", array("value" => $com["Board"]["user_id"]));
 		echo $this->Html->tag('h2',$com["Board"]["comment"]);
 		echo $this->Html->tag('br');
 		echo'この内容で投稿してもいいですか？';

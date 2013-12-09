@@ -2,10 +2,7 @@
     class Board extends Model{
         public $name = 'Board';
         public $useTable = 'boards';
-         public $belongsTo = array('User'); //=> array(
-        //             'className' => 'User',
-        //             'foreignKey' => 'id'
-        //         ));
+        public $belongsTo = array('User');
         
 
 		public function del($data){

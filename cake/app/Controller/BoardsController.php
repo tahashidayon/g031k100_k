@@ -46,6 +46,9 @@ class BoardsController extends AppController {
         }
  
         public function useradd(){
+            if ($this->Auth->user()) {
+                $this->redirect(array('action'=>'index'));
+            }
             //POST送信なら
             if($this->request->is('post')) {
                 $this->User->set($this->request->data);
@@ -68,6 +71,10 @@ class BoardsController extends AppController {
             }
         }
 
+    public function twlogin(){
+
+        //$this->redirect(array("action" => "index"));
+    }
     public function beforeFilter(){//login処理の設定
              $this->Auth->allow('login','logout','useradd');//ログインしないで、アクセスできるアクションを登録する
              $this->set('user',$this->Auth->user()); // ctpで$userを使えるようにする 。
@@ -78,19 +85,32 @@ class BoardsController extends AppController {
             $word=$this->request->data['Board']['word'];
             $num=$this->request->data['Board']['num'];
             $condition=array("Board.comment LIKE"=>"%$word%");
-            $search=$this->Board->find('all',array('conditions'=>$condition,'limit'=>$num));
-            $this->set('data',$search);
-        }else if (!empty($this->request->data['Board']['sort'])) {
-            $sort=$this->request->data['Board']['sort'];
-            if ($sort=0) {
-                $this->set('data',$this->Board->find('all',array('order'=>'Board.id ASC')));
+            
+            if (!empty($this->request->data['Board']['sort'])) {
+                $sort=$this->request->data['Board']['sort'];
+
+                if ($sort=='asc') {
+                    $search=$this->Board->find('all',array('conditions'=>$condition,'limit'=>$num,'order'=>'Board.id ASC'));
+                }elseif($sort=='desc'){
+                    $search=$this->Board->find('all',array('conditions'=>$condition,'limit'=>$num,'order'=>'Board.id DESC'));
+                }
             }else{
-                $this->set('data',$this->Board->find('all',array('order'=>'Board.id DESC')));
+                $search=$this->Board->find('all',array('conditions'=>$condition,'limit'=>$num,'order'=>'Board.id DESC'));
             }
+            $this->set('data',$search);
+        }elseif(!empty($this->request->data['Board']['sort'])){
+            $sort=$this->request->data['Board']['sort'];
+            if ($sort=='asc') {
+                $search=$this->Board->find('all',array('order'=>'Board.id ASC'));
+            }elseif($sort=='desc'){
+                $search=$this->Board->find('all',array('order'=>'Board.id DESC'));
+            }
+            $this->set('data',$search);
         }else{
-            $this->set('data', $this->Board->find('all'));
+            $this->set('data', $this->Board->find('all',array('order'=>'Board.id DESC')));
         }
     }
+   
 
     public function edit($id){
         if(!empty($this->request->data)){//ポスト送信されたら
@@ -115,7 +135,14 @@ class BoardsController extends AppController {
     }
 
     public function creatable(){
+        var_dump($this->Auth->user('id'));
+        //$check=$this->Auth->user('id');
+        var_dump($this->request->data);
+        // if (empty($check)) {
+        //     $this->request->data['Board']['user_id']=$this->request->data['User']['id'];
+        
         $this->request->data['Board']['user_id'] = $this->Auth->user('id');
+        
         $this->Board->save($this->request->data);
         $this->redirect(array("action" => "index"));
     }
