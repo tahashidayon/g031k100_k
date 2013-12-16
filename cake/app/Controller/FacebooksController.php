@@ -5,6 +5,7 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
 class FacebooksController extends AppController {
     public $name = 'Facebooks';
     public $uses = array('NewUser'); //Userモデルを追加
+    //public $layout ="jqm";
     public $components = array(
             'DebugKit.Toolbar', //デバッグきっと
             'TwitterKit.Twitter', //twitter
@@ -30,6 +31,9 @@ class FacebooksController extends AppController {
     public function beforeFilter(){//login処理の設定
             $this->Auth->allow('index', 'facebook', 'fbpost', 'createFacebook');
             $this->set('user',$this->Auth->user('NewUser')); // ctpで$userを使えるようにする 。
+            if($this->request->is('mobile')){
+                 $this->layout = 'jqm';
+             }
         }
  
     function showdata(){//トップページ
@@ -71,7 +75,7 @@ class FacebooksController extends AppController {
             'access_token' => $facebook->getAccessToken(), //access_token入手
             'message' => $postData,
             'name' => "test",
-            'link' => "http://twitter.com/JDAMI_szn",
+            'link' => "http://twitter.com/tahashidayon",
             'description' => "test",
         );
         $facebook->api('/me/feed', 'POST', $attachment);

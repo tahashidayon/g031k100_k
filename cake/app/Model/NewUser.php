@@ -32,7 +32,7 @@
             //$data['tw_id'] = $token['user_id'];
             $data['name'] = $token['name'];
             $data['email'] = $token['email'];
-            var_dump($token);
+            //var_dump($token);
             //$data['password'] = Security::hash($token['oauth_token']);
             //$data['oauth_token'] = Security::hash($token['oauth_token']);
             //$data['oauth_token_secret'] = Security::hash($token['oauth_token_secret']);

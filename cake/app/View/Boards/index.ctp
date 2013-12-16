@@ -50,5 +50,3 @@
 	echo $this->Html->tag('br');
 	
 ?>
-
-/**/

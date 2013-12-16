@@ -2,7 +2,8 @@
 class BoardsController extends AppController {
     public $name = 'Boards';
     public $uses = array('Board','User');
-    //public $layout = "board_layout";
+    
+    //public $layout = "jqm";
     
 /****認証周り*****/
     public $components = array(
@@ -37,6 +38,8 @@ class BoardsController extends AppController {
                 }
             }
         }
+       
+ //モバイルからのリクエストの場合
  
         public function logout(){
             $this->Auth->logout();
@@ -78,6 +81,9 @@ class BoardsController extends AppController {
     public function beforeFilter(){//login処理の設定
              $this->Auth->allow('login','logout','useradd');//ログインしないで、アクセスできるアクションを登録する
              $this->set('user',$this->Auth->user()); // ctpで$userを使えるようにする 。
+             if($this->request->is('mobile')){
+                 $this->layout = 'jqm';
+             }
         }
 
     public function index(){

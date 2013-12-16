@@ -3,6 +3,7 @@
         public $name = 'Twitterlogins';
        // public $layout = "bootstrap"; //board.ctp レイアウトを利用
         public $uses = array('NewUser'); //Userモデルを追加
+        //public $layout = "jqm";
         /****認証周り*****/
         public $components = array(
             'DebugKit.Toolbar', //デバッグきっと
@@ -27,6 +28,9 @@
         public function beforeFilter(){//login処理の設定
              $this->Auth->allow('twitter_login', 'login', 'oauth_callback');
              $this->set('user',$this->Auth->user()); // ctpで$userを使えるようにする 。
+             if($this->request->is('mobile')){
+                 $this->layout = 'jqm';
+             }
         }
         public function twitter_login(){
                     $this->redirect($this->Twitter->getAuthenticateUrl(null, true));
